@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.App;
-using Android.Content;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 using CustomAndroidCalendar;
 
 namespace Example
 {
-    [Activity(Label = "Calendar Example", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Calendar Example", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = Android.Content.PM.ConfigChanges.ScreenSize | Android.Content.PM.ConfigChanges.Orientation)]
     public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
