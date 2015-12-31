@@ -51,6 +51,9 @@ namespace CustomAndroidCalendar
         /// <param name="canvas">The canvas.</param>
         protected override void OnDraw(Canvas canvas)
         {
+            int cellHeight = endY - baseY;
+            int cellWidth = endX - baseX;
+
             gridLineWidth = 2;
             cornerRadius = 20;
             myCanvas = canvas;
@@ -73,7 +76,8 @@ namespace CustomAndroidCalendar
             markedPaint.Color = markerColor;
 
             Paint textPaint = new Paint();
-            textPaint.TextSize = (endY - baseY) / 3;
+            //textPaint.TextSize = cellWidth / 3;
+            textPaint.TextSize = 35;
             if (!holiday)
                 textPaint.Color = cellTextColor;
             else
@@ -110,6 +114,12 @@ namespace CustomAndroidCalendar
                 }
             }
 
+            Rect textBounds = new Rect();
+            textPaint.GetTextBounds(date.Day.ToString(), 0, date.Day.ToString().Length, textBounds);
+
+            //Draw the day
+            canvas.DrawText(date.Day.ToString(), baseX + cellWidth / 3 - textBounds.Width() / 2, baseY + textPaint.TextSize, textPaint);
+
             if (marked)
             {
                 //This day needs to be marked
@@ -117,24 +127,21 @@ namespace CustomAndroidCalendar
                 if ((!smallMarker && !roundedCells) || (!smallMarker && roundedCells))
                 {
                     //Big marker
-                    Rect markRect = new Rect(baseX + gridLineWidth / 2, endY - (endY - baseY) / 6, endX - gridLineWidth / 2, endY - (endY - baseY) / 8);
+                    Rect markRect = new Rect(baseX + gridLineWidth / 2, endY - cellHeight / 6, endX - gridLineWidth / 2, endY - cellHeight / 8);
                     canvas.DrawRect(markRect, markedPaint);
                 }
                 else if (smallMarker && !roundedCells)
                 {
                     //Small marker and no rounded cells
-                    Rect markRect = new Rect(endX - (endX - baseX) / 8, endY - (endY - baseY) / 6, endX, endY);
+                    Rect markRect = new Rect(endX - cellWidth / 8, endY - cellHeight / 6, endX, endY);
                     canvas.DrawRect(markRect, markedPaint);
                 }
                 else if (smallMarker && roundedCells)
                 {
                     //Small marker and rounded cells
-                    canvas.DrawCircle(endX - (endX - baseX) / 6, endY - (endX - baseX) / 6, (endX - baseX) / 12, markedPaint);
+                    canvas.DrawCircle(baseX + cellWidth / 3, baseY + textBounds.Height() + cellHeight / 3, cellHeight / 18, markedPaint);
                 }
             }
-
-            //Draw the day
-            canvas.DrawText(date.Day.ToString(), baseX + (endX - baseX) / 6, baseY + textPaint.TextSize, textPaint);
         }
 
         /// <summary>
@@ -145,16 +152,16 @@ namespace CustomAndroidCalendar
             Paint gridPaint = new Paint();
             gridPaint.SetStyle(Paint.Style.Stroke);
             gridPaint.Color = todayColor;
-            gridPaint.StrokeWidth = gridLineWidth * 4;
+            gridPaint.StrokeWidth = gridLineWidth * 3;
 
             if (!roundedCells)
             {
-                Rect gridRect = new Rect(baseX, baseY, endX, endY);
+                Rect gridRect = new Rect(baseX + gridLineWidth , baseY + gridLineWidth , endX - gridLineWidth , endY - gridLineWidth );
                 myCanvas.DrawRect(gridRect, gridPaint);
             }
             else
             {
-                RectF gridRoundRect = new RectF(baseX, baseY, endX, endY);
+                RectF gridRoundRect = new RectF(baseX + gridLineWidth , baseY + gridLineWidth , endX - gridLineWidth , endY - gridLineWidth );
                 myCanvas.DrawRoundRect(gridRoundRect, cornerRadius, cornerRadius, gridPaint);
             }
         }

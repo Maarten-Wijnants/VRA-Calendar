@@ -34,9 +34,9 @@ namespace Example
             //cal.todayColor = Android.Graphics.Color.Black;
 
 
-            cal.smallMarker = false;        //If true, use a smaller marker (default = false)
+            cal.smallMarker = true;        //If true, use a smaller marker (default = false)
             cal.todayMarker = true;         //If true, indicate the current day (default = false)
-            cal.roundedCells = false;       //If true, use cells with rounded corners (default = false)
+            cal.roundedCells = true;       //If true, use cells with rounded corners (default = false)
 
             //Show a date (default = today)
             cal.setDate(DateTime.Now);
