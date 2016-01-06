@@ -58,6 +58,7 @@ namespace CustomAndroidCalendar
         public bool smallMarker { get; set; }
         public bool roundedCells { get; set; }
         public bool todayMarker { get; set; }
+        public bool selectionSquare { get; set; }
 
         public CustomAndroidCalendarView(Context context) : base(context)
         {
@@ -110,6 +111,7 @@ namespace CustomAndroidCalendar
             smallMarker = false;
             roundedCells = false;
             todayMarker = false;
+            selectionSquare = true;
         }
 
         /// <summary>
@@ -225,6 +227,7 @@ namespace CustomAndroidCalendar
 
                 cell.smallMarker = smallMarker;
                 cell.roundedCells = roundedCells;
+                cell.selectionSquare = selectionSquare;
 
                 cell.marked = false;
                 cell.holiday = false;

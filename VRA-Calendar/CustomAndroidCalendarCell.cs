@@ -36,6 +36,7 @@ namespace CustomAndroidCalendar
         public bool smallMarker { get; set; }
         public bool roundedCells { get; set; }
         public bool weekendCell { get; set; }
+        public bool selectionSquare { get; set; }
 
         private int gridLineWidth, cornerRadius;
         private Canvas myCanvas;
@@ -77,8 +78,13 @@ namespace CustomAndroidCalendar
 
             Paint textPaint = new Paint();
             //textPaint.TextSize = cellWidth / 3;
-            textPaint.TextSize = 35;
-            if (!holiday)
+            textPaint.TextSize = cellHeight / 4;
+            if (!selectionSquare && selectedDate)
+            {
+                textPaint.TextSize = (float)(textPaint.TextSize * 1.2);
+                textPaint.Color = selectionColor;
+            }
+            else if (!holiday)
                 textPaint.Color = cellTextColor;
             else
                 textPaint.Color = holidayColor;     //If this day is a holiday it gets a different color
@@ -99,7 +105,7 @@ namespace CustomAndroidCalendar
                 canvas.DrawRoundRect(gridRoundRect, cornerRadius, cornerRadius, gridPaint);
             }
 
-            if (selectedDate)
+            if (selectedDate && selectionSquare)
             {
                 //This is the selected date, it gets a different color
                 if (!roundedCells)
@@ -118,7 +124,7 @@ namespace CustomAndroidCalendar
             textPaint.GetTextBounds(date.Day.ToString(), 0, date.Day.ToString().Length, textBounds);
 
             //Draw the day
-            canvas.DrawText(date.Day.ToString(), baseX + cellWidth / 3 - textBounds.Width() / 2, baseY + textPaint.TextSize, textPaint);
+            canvas.DrawText(date.Day.ToString(), baseX + cellWidth / 6, baseY + cellWidth / 6 + textBounds.Height(), textPaint);
 
             if (marked)
             {
@@ -139,7 +145,7 @@ namespace CustomAndroidCalendar
                 else if (smallMarker && roundedCells)
                 {
                     //Small marker and rounded cells
-                    canvas.DrawCircle(baseX + cellWidth / 3, baseY + textBounds.Height() + cellHeight / 3, cellHeight / 18, markedPaint);
+                    canvas.DrawCircle(baseX + cellWidth / 6 + cellWidth / 8, baseY + cellWidth / 6 + textBounds.Height() + cellHeight / 4, cellHeight / 18, markedPaint);
                 }
             }
         }
